@@ -7,7 +7,6 @@
 	 	
 	 	private $nombres;
 	 	private $apellidos;
-	 	private $userName;
 	 	private $encryptedPassword;
 	 	private $perfil;
 	 	private $email;
@@ -41,16 +40,6 @@
 	 	public function setApellidos($apellidos){
 
 	 		$this->apellidos = $apellidos;
-	 	}
-
-	 	public function getUserName(){
-
-	 		return $this->userName;
-	 	}
-
-	 	public function setUserName($userName){
-
-	 		$this->userName = $userName;
 	 	}
 
 	 	public function getPerfil(){

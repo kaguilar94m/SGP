@@ -20,7 +20,7 @@
 	<title>Home-Sistema de Generación de Presupuestos y Control de Proyectos</title>
 </head>
 <body>
-	<p><?= $userData->getUserName()  ?></p>
+	<p><?= $userData->getNombres(), $userData->getApellidos()  ?></p>
 	<p><a href="../services/user/logout.php">Desconectar</a></p>
 </body>
 </html>

@@ -33,8 +33,17 @@
 	   			<div id="log-contain">
 					<?php
 						if (isset($_GET["error"])){
+							if ($_GET["error"] == 0){
 					?>
-						 <div id="errorDiv" class="alert alert-danger alert-round alert-border alert-soft"><span class="icon icon-remove-sign"></span> <strong>Error:</strong>
+						<div class="alertDiv alert alert-success alert-round alert-border alert-soft">
+							<span class="icon icon-ok-sign" ></span>
+							El usuario ha sido exitosamente creado. <strong>Por favor espere a que un usuario administrador le asigne permisos para poder entrar al sistema</strong>
+						</div>
+					<?php
+					}
+					else{ 
+					?>
+						 <div class="alertDiv alert alert-danger alert-round alert-border alert-soft"><span class="icon icon-remove-sign"></span> <strong>Error:</strong>
 					<?php
 						if ($_GET["error"] == 1){
 
@@ -51,19 +60,20 @@
 					?>
 					</div>
 				<?php
-					} 
+					}
+				}
 				?>
 	    		<div id="login">
 					<form id="login-form" class="form" action="services/user/login.php" method="POST">
 	      				<div class="form-group">
-	       					<label class="control-label" for="login-username">Nombre de Usuario</label>
+	       					<label class="control-label" for="email">Correo Electrónico</label>
 	       					<div class="input-icon">
 	        					<i class="icon icon-user"></i>
-	        					<input class="form-control form-soft input-sm" type="text" name="username">
+	        					<input class="form-control form-soft input-sm" type="text" name="email">
 	       					</div>
 	      				</div>
 	      				<div class="form-group">
-	       					<label class="control-label" for="login-password">Contraseña</label>
+	       					<label class="control-label" for="pass">Contraseña</label>
 	       					<div class="input-icon">
 	        					<i class="icon icon-lock"></i>
 	        					<input class="form-control form-soft input-sm" type="password" name="pass">
@@ -74,6 +84,12 @@
 	      				</div>
 	      			 </form>
 				</div>
+				<div class="tbl">
+     				<div class="col-md-12" >
+      					<a href="#" class="btn btn-warning" style="float:left;"><i class="fa fa-question"></i>&nbsp;&nbsp;&nbsp;Restablecer contraseña</a>
+      					<a href="new_account.php" class="btn btn-soft" style="float:right;">Nueva cuenta&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+     				</div>
+    			</div>
 			</div>
 	    </div>
 
@@ -84,26 +100,29 @@
 		<script type="text/javascript" src="lib/JS/typeahead-example.js"></script>
 		<script type="text/javascript" src="lib/JS/bootstrapValidator.js"></script>
 		<script type="text/javascript">
-		  $(document).ready(function() {
-		   $('#login-form').bootstrapValidator({
-		    fields: {
-		     username: {
-		      validators: {
-		       notEmpty: {
-		        message: 'Por favor ingrese el nombre de usuario'
-		       }
-		      }
-		 	 },
-		     pass: {
-		      validators: {
-		       notEmpty: {
-		        message: 'Por favor ingrese la contraseña'
-		       }
-		      }
-		     }
-		    }
-		   });
-		  });
+		  	$(document).ready(function() {
+		   		$('#login-form').bootstrapValidator({
+		    		fields: {
+		     			email: {
+		      				validators: {
+                    			notEmpty: {
+                        			message: 'Por favor ingrese el correo electrónico con el que se registro'
+                    			},
+                    			emailAddress: {
+                        			message: 'Por favor ingrese un correo válido'
+                    			}
+                			}
+		 	 			},
+		     			pass: {
+                			validators: {
+                    			notEmpty: {
+                        			message: 'Por favor ingrese la contraseña'
+                    			}
+                			}
+            			}
+		    		}
+		   		});
+		  	});
 	  </script>
 	</body>
 </html>
