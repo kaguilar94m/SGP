@@ -36,6 +36,7 @@
 							if ($_GET["error"] == 0){
 					?>
 						<div class="alertDiv alert alert-success alert-round alert-border alert-soft">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							<span class="icon icon-ok-sign" ></span>
 							El usuario ha sido exitosamente creado. <strong>Por favor espere a que un usuario administrador le asigne permisos para poder entrar al sistema</strong>
 						</div>
@@ -43,7 +44,11 @@
 					}
 					else{ 
 					?>
-						 <div class="alertDiv alert alert-danger alert-round alert-border alert-soft"><span class="icon icon-remove-sign"></span> <strong>Error:</strong>
+						 <div class="alertDiv alert alert-danger alert-round alert-border alert-soft">
+						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						 <span class="icon icon-remove-sign">
+						 	
+						 </span> <strong>Error:</strong>
 					<?php
 						if ($_GET["error"] == 1){
 

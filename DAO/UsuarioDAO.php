@@ -20,10 +20,14 @@
 
 		public function save($user){
 			if(is_a($user, "Usuario")){
+				$user->setNombres($this->db->real_escape_string($user->getNombres()));
+				$user->setEmail($this->db->real_escape_string($user->getEmail()));
+				$user->setApellidos($this->db->real_escape_string($user->getApellidos()));
+				$user->setEncryptedPassword($this->db->real_escape_string($user->getEncryptedPassword()));
 				$query = "INSERT INTO usuario (email, nombres, apellidos, password, activo) VALUES ('".$user->getEmail()."', '".$user->getNombres()."', '".$user->getApellidos()."', '".$user->getEncryptedPassword()."', 0)";
 				$res = $this->db->query($query);
 				if(!$res){
-					if ($this->db_errno == 1062){
+					if ($this->db->errno == 1062){
 						$this->error = 2;
 					}
 					else{
@@ -66,6 +70,28 @@
 		{
 			return $this->error;
 		}
+
+		public function getUsuarios(){
+			$query = "SELECT email, nombres, apellidos, nombrePerfil, activo FROM usuario LEFT JOIN perfil ON perfil.idPerfil = usuario.perfil ";
+			$res = $this->db->query($query);
+			$usuarios = array();
+			if ($res and $res->num_rows > 0){
+				while($obj = $res->fetch_object()){
+					$user = new Usuario();
+					$user->setNombres($obj->nombres);
+					$user->setApellidos($obj->apellidos);
+					$user->setEmail($obj->email);
+					$user->setEstado(($obj->activo == 0 ? true : false));
+					$user->setPerfil((!is_null($obj->nombrePerfil) ? $obj->nombrePerfil : null));
+					$usuarios[] = $user;
+				}
+				return $usuarios;
+			}else{
+				$this->error = 1;
+				return $this->error;
+			}
+		}
+
 	}
 
 ?>

@@ -2,7 +2,7 @@
 	/**
 	 * 
 	 */
-	 class Usuario 
+	 class Usuario implements JSONSerializable
 	 {
 	 	
 	 	private $nombres;
@@ -66,6 +66,14 @@
 
 	 	public function getEmail(){
 	 		return $this->email;
+	 	}
+
+	 	public function jsonSerialize(){
+	 		return array('nombres' => $this->nombres,
+	 		'apellidos' => $this->apellidos,
+	 		'email' => $this->email,
+	 		'perfil' => (is_null($this->perfil) ? "Ninguno" : $this->perfil),
+	 		'estado' => ($this->estado ? "Desactivado" : "Activado"));
 	 	}
 
 	 } 

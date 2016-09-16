@@ -34,7 +34,11 @@
 	   				<?php
 						if (isset($_GET["error"])){
 					?>
-						 <div class="alertDiv alert alert-danger alert-round alert-border alert-soft"><span class="icon icon-remove-sign"></span> <strong>Error:</strong>
+						 <div class="alertDiv alert alert-danger alert-round alert-border alert-soft">
+						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						 <span class="icon icon-remove-sign">
+						 	
+						 </span> <strong>Error:</strong>
 					<?php
 						if ($_GET["error"] == 1){
 
@@ -42,7 +46,7 @@
 						}
 						elseif ($_GET["error"] == 2 ){
 
-							echo "Este correo ya ha sido registrado por otro usuario, por favor use otra";
+							echo "Este correo ya ha sido registrado por otro usuario, por favor use otro";
 						}
 					?>
 					</div>
