@@ -92,6 +92,49 @@
 			}
 		}
 
+		public function getUserByIdAll($id)
+		{
+			$id = $this->db->real_escape_string($id);
+			$query = 'SELECT nombres, apellidos, password, perfil, email, activo FROM usuario WHERE email = "'.$id.'"';
+			$res = $this->db->query($query);
+			if ($res and $res->num_rows > 0){
+				$obj = $res->fetch_object();
+
+				$user = new Usuario();
+		
+				$user->setNombres($obj->nombres);
+				$user->setApellidos($obj->apellidos);
+				$user->setEncryptedPassword($obj->password);
+				$user->setPerfil($obj->perfil);
+				$user->setEmail($obj->email);
+				$user->setEstado(($obj->activo == 0 ? false : true));
+
+				return $user;
+			}else{
+				if($db->errno){
+					$this->error = 1;
+				}else{
+					$this->error = 3;
+				}
+				return $this->error;
+			}
+		}
+
+		public function actualizarPermisosUsuario($usuario){
+			if(is_a($usuario, "Usuario")){
+				$usuario->setEmail($this->db->real_escape_string($usuario->getEmail()));
+				$activo = ($usuario->getEstado() ? 1 : 0);
+				$perfil = (empty($usuario->getPerfil()) ? "NULL" : $usuario->getPerfil());
+				$query = "UPDATE usuario SET activo=".$activo.", perfil=".$perfil." WHERE email='".$usuario->getEmail()."'";
+				if($this->db->query($query)){
+					return true;
+				}else{
+					$this->error = 1;
+					return $this->error;
+				}
+			}
+		}
+
 	}
 
 ?>

@@ -4,15 +4,13 @@
 
 	session_start();
 
-	if (isset($_SESSION["userData"])){
-		$userData = $_SESSION["userData"];
-
-		session_write_close();
-	}
-	else{
+	if (!isset($_SESSION["userData"])){
+		session_destroy();
 		header("Location: ../index.php");
 		exit();
 	}
+	$userData = $_SESSION["userData"];
+	session_write_close();
 ?>
 <!DOCTYPE html>
 <html>

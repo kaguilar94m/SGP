@@ -1,10 +1,15 @@
 <?php
   require_once '../../model/Usuario.php';
+  require_once '../../DAO/UsuarioDAO.php';
+  require_once '../../model/Perfil.php';
+  require_once '../../DAO/PerfilDAO.php';
 
   session_start();
 
-  if(isset($_SESSION["userData"]) and $_SESSION["userData"]->getPerfil() == "Administrador"){
+ if(isset($_SESSION["userData"], $_GET["email"]) and $_SESSION["userData"]->getPerfil() == "Administrador"){
   session_write_close();
+  $userDAO = new UsuarioDAO();
+  $perfilDAO = new PerfilDAO();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +22,7 @@
   <link rel="stylesheet" href="../../lib/CSS/bootstrap.min.css">
   <link rel="stylesheet" href="../../lib/CSS/fonts.css">
   <link type="text/css" rel="stylesheet" href="../../lib/CSS/soft-admin.css"/>
-  
-  <!-- Adjustable Styles -->
-  <link type="text/css" rel="stylesheet" href="../../lib/CSS/DT_bootstrap.css"/>
+  <link type="text/css" rel="stylesheet" href="../../lib/CSS/jquery.switchButton.css">
   
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -322,22 +325,87 @@
      <div class="tbl">
       <div class="col-md-12">
        <div class="wdgt" hide-btn="true">
-        <div class="wdgt-header">Usuarios</div>
+        <div class="wdgt-header">Editar Permisos de Usuario</div>
         <div class="wdgt-body" style="padding-bottom:0px; padding-top:10px;">
-         <table cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered">
-     <thead>
-      <tr>
-       <th>Nombres</th>
-       <th>Apellidos</th>
-       <th>Email</th>
-       <th>Estado</th>
-       <th>Perfil</th>
-       <th>Acciones</th>
-      </tr>
-     </thead>
-     
-    </table>
-
+        <?php
+          $user = $userDAO->getUserByIdAll($_GET["email"]);
+          $perfiles = $perfilDAO->getPerfiles();
+          if (!is_null($userDAO->getError()) or  !is_null($perfilDAO->getError()) or is_numeric($user) or is_numeric($perfiles)) {
+            
+        ?>
+        <div class="alertDiv alert alert-danger alert-round alert-border alert-soft">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+             <span class="icon icon-remove-sign">
+              
+             </span> <strong>Error:</strong><?php echo  'Se ha producido un error en la conexión a la base de datos, por favor intente realizar esta operación más tarde'; ?>
+          </div>
+         <?php
+          }
+          else{
+        ?>
+        <form id="edit-permisos-form" class="form-horizontal" action="../../services/admin/usuarioPermisos.php" method="POST">
+       
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Nombres</label>
+            <div class="col-lg-7">
+              <h5><?php echo $user->getNombres(); ?></h5>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Apellidos</label>
+            <div class="col-lg-7">
+              <h5><?php echo $user->getApellidos(); ?></h5>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email</label>
+            <div class="col-lg-7">
+              <h5><?php echo $user->getEmail(); ?></h5>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Estado</label>
+            <div class="col-lg-7">
+              <span class="wdgt-switch"><input id="switch" class="switch4" type="checkbox" name="estado" value="1" 
+              <?php if($user->getEstado()) 
+              {
+                echo "checked";
+                } ?>></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Perfil</label>
+            <div class="col-lg-7">
+              <select class="form-control" name="perfil" id="cbx-perfiles">
+              <?php if (is_null($user->getPerfil())) {
+              
+               echo '<option value="">--Seleccione una opción---</option>';
+               }else{
+                 echo '<option value="" selected>--Seleccione una opción---</option>';
+               }
+               foreach ($perfiles as $perfil) {
+                  if ($perfil->getIdPerfil() == $user->getPerfil()) {
+                    echo '<option value="'.$perfil->getIdPerfil().'" selected>'.$perfil->getNombrePerfil().'</option>';
+                }
+                else{
+                echo  '<option value="'.$perfil->getIdPerfil().'">'.$perfil->getNombrePerfil().'</option>';
+                  }
+                } 
+               ?> 
+                
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="email" value="<?php echo $_GET["email"]; ?>" />
+          <div class="form-group">
+            <div class="col-lg-9 col-lg-offset-3">
+              <button class="btn btn-primary" type="submit">Ingresar cambios</button>
+            </div>
+          </div>
+        </form>
+        <?php 
+          }
+        ?>
         </div>
        </div>
 
@@ -354,60 +422,53 @@
   
   <!-- Default JS (DO NOT TOUCH) -->
   <script src="../../lib/JS/jquery-3.1.0.min.js"></script>
+  <script src="../../lib/JS/jquery-ui.min.js"></script>
   <script src="../../lib/JS/bootstrap.min.js"></script>
   <script src="../../lib/JS/hogan.min.js"></script>
   <script src="../../lib/JS/typeahead.min.js"></script>
   <script src="../../lib/JS/typeahead-example.js"></script>
-  
-  <!-- Adjustable JS -->
-  <script src="../../lib/JS/jquery.dataTables.js"></script>
-  <script src="../../lib/JS/DT_bootstrap.js"></script>
   <script src="../../lib/JS/soft-widgets.js"></script>
-  <script>
-   $(document).ready(function() {
-    var dataTable = $('.datatable').dataTable({
-     "sDom" : "frtip",
-     "sAjaxSource" : "../../services/admin/users_table.php",
-     "sAjaxDataProp" : "data",
-     "bLengthChange" : false,
-     "sPaginationType" : "bs_full",
-     "iDisplayLegth" : 15,
-     "bProcessing" : true,
-     "fnServerData" : function ( sSource, aoData, fnCallback ) {
-      $.ajax({
-        "dataType" : "json",
-        "type" : "POST",
-        "url" : sSource,
-        "success" : fnCallback
-      })
-    },
-    "aoColumns" : [
-      {"mData" : "nombres"},
-      {"mData" : "apellidos"},
-      {"mData" : "email"},
-      {"mData" : "estado"},
-      {"mData" : "perfil"},
-      {"mData" : null}
-    ],
-    "aaSorting" : [],
-    "aoColumnDefs": [
-      { "bSearchable": false, "aTargets": [ 4, 5 ] },
-      {"aTargets":[5], "mRender" : function(data, type, full){
-        return "<a href='editPermisos.php?email="+full.email+"' class = 'btn btn-soft btn-sm'><i class='icon icon-edit'></i></a>"
-      }}
-    ]
-    }); 
+  <script src="../../lib/JS/jquery.switchButton.js"></script>
+  <script type="text/javascript" src="../../lib/JS/bootstrapValidator.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
 
-    $('.datatable').each(function(){
-     var datatable = $(this);
-     // SEARCH - Add the placeholder for Search and Turn this into in-line form control
-     var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
-     search_input.attr('placeholder', 'Search');
-     search_input.addClass('form-control input-sm');    
+      if (!$("#switch").is(":checked")) {
+        $(this).prop("disabled", "disabled");
+      }
+      
+      $("#switch").change(function(){
+        if(!$(this).is(":checked")){
+          $("#cbx-perfiles").val("");
+          $("#cbx-perfiles").prop("disabled", "disabled");
+        }else{
+          $("#cbx-perfiles").prop("disabled", false);
+        }
+      });
+
+      $(".switch4").switchButton({
+        on_label : 'Activado',
+        off_label : 'Desactivado'
+      });
+
+      $("#edit-permisos-form").bootstrapValidator({
+        fields:{
+          perfil : {
+            validators: {
+              callback : {
+                message : "Por favor escoga un perfil de la lista",
+                callback : function (value, validator) {
+                   return !$("#switch").is(":checked") || value !== "";
+
+                  }
+                }
+              }
+            }
+          }
+        });
     });
-   });
-  </script>
-  
+  </script> 
+ 
  </body>
 </html>
 <?php
@@ -416,5 +477,5 @@ else{
  header("Location: ../home.php");
     session_destroy();
     exit(); 
-}
+} 
 ?>
