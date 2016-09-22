@@ -39,7 +39,11 @@
    
    <!-- RESPONSIVE LEFT SIDEBAR & LOGO -->
    <div class="left hidden-xs">
+<<<<<<< HEAD
     <div class="logo"> <img id="logo" src="../Imagenes/logo.png" style="width:159px !important; height:52px; !important"> </div>
+=======
+    <div class="logo"><img id="logo" src="../lib/img/logo3.png" style="width:159px !important; height:52px; !important"></div>
+>>>>>>> refs/remotes/devkev95/master
     <div class="sidebar">
      <div class="accordion">
       <div class="accordion-group">
@@ -60,6 +64,7 @@
        </div>
       </div>
       <?php } ?>
+<<<<<<< HEAD
 
       <div class="accordion-group">
        <div class="accordion-heading">
@@ -90,10 +95,13 @@
       </div>
 
       
+=======
+>>>>>>> refs/remotes/devkev95/master
       </div>
       </div>
       </div>
    <!-- END LEFT SIDEBAR & LOGO -->
+<<<<<<< HEAD
 
 
    <!-- RESPONSIVE NAVIGATION -->
@@ -117,15 +125,20 @@
     <input class="form-control form-warning input-sm" type="text">
    </div>
    <!-- END RESPONSIVE NAVIGATION -->   
+=======
+>>>>>>> refs/remotes/devkev95/master
    
    <!-- RIGHT NAV, CRUMBS, & CONTENT -->
    <div class="right">
    
     <div class="nav">
     <div class="bar">
+<<<<<<< HEAD
 
       <div class="logo-small visible-xs"><img  style="width:120px; !important; height:32px; !important" src="../Imagenes/logo.png"></div>
       
+=======
+>>>>>>> refs/remotes/devkev95/master
     	<div class="hov">
     		<div class="btn-group">
     		<a class="con" href="" data-toggle="dropdown"><span class="icon icon-user"></span></a>

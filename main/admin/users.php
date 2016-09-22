@@ -43,6 +43,7 @@
         <a class="sbtn btn-default" href="../home.php">
          <span class="fa fa-home"></span>
          &nbsp;&nbsp;Home
+<<<<<<< HEAD
         </a>
        </div>
       </div>
@@ -110,15 +111,36 @@
     <input class="form-control form-warning input-sm" type="text">
    </div>
    <!-- END RESPONSIVE NAVIGATION -->   
+=======
+        </a>
+       </div>
+      </div>
+      <?php if ($userData->getPerfil() == "Administrador"){ ?>
+      <div class="accordion-group">
+       <div class="accordion-heading">
+        <a class="sbtn btn-default active" href="#">
+         <span class="fa fa-users"></span>
+         &nbsp;&nbsp;Usuarios
+        </a>
+       </div>
+      </div>
+      <?php } ?>
+      </div>
+      </div>
+      </div>
+>>>>>>> refs/remotes/devkev95/master
    
    <!-- RIGHT NAV, CRUMBS, & CONTENT -->
    <div class="right">
    
      <div class="nav">
     <div class="bar">
+<<<<<<< HEAD
 
        <div class="logo-small visible-xs"><img  style="width:120px; !important; height:32px; !important" src="../Imagenes/logo.png"></div>
       
+=======
+>>>>>>> refs/remotes/devkev95/master
       <div class="hov">
         <div class="btn-group">
         <a class="con" href="" data-toggle="dropdown"><span class="icon icon-user"></span></a>
